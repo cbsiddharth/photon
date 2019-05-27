@@ -1,7 +1,7 @@
 Summary:        Free version of the SSH connectivity tools
 Name:           openssh
 Version:        7.8p1
-Release:        4%{?dist}
+Release:        5%{?dist}
 License:        BSD
 URL:            https://www.openssh.com/
 Group:          System Environment/Security
@@ -43,6 +43,7 @@ This provides the ssh client utilities.
 
 %package server
 Summary: openssh server applications
+Requires:   systemd
 Requires:   Linux-PAM
 Requires:   shadow
 Requires:   ncurses-terminfo
@@ -186,6 +187,9 @@ rm -rf %{buildroot}/*
 %{_mandir}/man8/ssh-pkcs11-helper.8.gz
 
 %changelog
+*   Mon Jun 03 2019 Ankit Jain <ankitja@vmware.comm> 7.8p1-5
+-   Added systemd as Requies, This is required to enable
+-   the sshd.service and sshd-keygen.service
 *   Mon Jun 03 2019 Ankit Jain <ankitja@vmware.comm> 7.8p1-4
 -   Fix for CVE-2019-6110.
 *   Thu May 09 2019 Ankit Jain <ankitja@vmware.comm> 7.8p1-3

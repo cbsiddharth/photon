@@ -1,7 +1,7 @@
 Summary:        A high-level scripting language
 Name:           python3
 Version:        3.7.3
-Release:        2%{?dist}
+Release:        3%{?dist}
 License:        PSF
 URL:            http://www.python.org/
 Group:          System Environment/Programming
@@ -42,7 +42,7 @@ code. It is incompatible with Python 2.x releases.
 %package libs
 Summary: The libraries for python runtime
 Group: Applications/System
-Requires:       (coreutils or toybox)
+Requires:       coreutils
 Requires:       expat >= 2.1.0
 Requires:       libffi >= 3.0.13
 Requires:       ncurses
@@ -261,6 +261,9 @@ rm -rf %{buildroot}/*
 %{_libdir}/python3.7/test/*
 
 %changelog
+*   Fri Jul 12 2019 Ankit Jain <ankitja@vmware.com> 3.7.3-3
+-   Replaced (coreutils or toybox) with coreutils from Requires,
+-   causing failure in docker image build
 *   Mon Jun 17 2019 Tapas Kundu <tkundu@vmware.com> 3.7.3-2
 -   Fix for CVE-2019-10160
 *   Mon Jun 10 2019 Tapas Kundu <tkundu@vmware.com> 3.7.3-1

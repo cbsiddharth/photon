@@ -28,6 +28,7 @@ class Installer(object):
 
     def __init__(self, install_config, maxy=0, maxx=0, iso_installer=False,
                  rpm_path=os.path.dirname(__file__)+"/../stage/RPMS", log_path=os.path.dirname(__file__)+"/../stage/LOGS", log_level="info"):
+
         self.install_config = install_config
         self.install_config['iso_installer'] = iso_installer
         self.rpm_path = rpm_path
@@ -74,6 +75,7 @@ class Installer(object):
         Install photon system and handle exception
         """
         del params
+
         try:
             return self._unsafe_install()
         except Exception as inst:
@@ -87,6 +89,7 @@ class Installer(object):
         """
         Install photon system
         """
+
         self._setup_install_repo()
         self._initialize_system()
         self._install_packages()

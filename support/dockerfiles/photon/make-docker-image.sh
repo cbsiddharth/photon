@@ -35,6 +35,7 @@ EOF
 rm -rf $TEMP_CHROOT
 mkdir $TEMP_CHROOT
 
+tdnf erase -y toybox
 tdnf install -y rpm
 
 rpm --root $TEMP_CHROOT/ --initdb

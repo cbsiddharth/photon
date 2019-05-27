@@ -2,7 +2,7 @@
 Summary:        Kernel
 Name:           linux
 Version:        4.19.52
-Release:        6%{?kat_build:.%kat_build}%{?dist}
+Release:        7%{?kat_build:.%kat_build}%{?dist}
 License:    	GPLv2
 URL:        	http://www.kernel.org/
 Group:        	System Environment/Kernel
@@ -104,8 +104,8 @@ BuildRequires:  openssl-devel
 BuildRequires:  procps-ng-devel
 BuildRequires:	audit-devel
 Requires:       filesystem kmod
-Requires(post):(coreutils or toybox)
-Requires(postun):(coreutils or toybox)
+Requires(post): coreutils
+Requires(postun): coreutils
 %define uname_r %{version}-%{release}
 
 %description
@@ -467,6 +467,8 @@ ln -sf %{name}-%{uname_r}.cfg /boot/photon.cfg
 %endif
 
 %changelog
+*   Wed Jul 31 2019 Ankit Jain <ankitja@vmware.com> 4.19.52-7
+-   Removed toybox from Requires which was optional.
 *   Thu Jul 25 2019 Keerthana K <keerthanak@vmware.com> 4.19.52-6
 -   Fix postun scriplet.
 *   Thu Jul 11 2019 Keerthana K <keerthanak@vmware.com> 4.19.52-5

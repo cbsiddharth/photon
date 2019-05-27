@@ -5,7 +5,7 @@
 
 Name:           dracut
 Version:        048
-Release:        1%{?dist}
+Release:        2%{?dist}
 Group:          System Environment/Base
 # The entire source code is GPLv2+
 # except install/* which is LGPLv2+
@@ -24,14 +24,14 @@ BuildRequires:  pkg-config
 BuildRequires:  kmod-devel
 BuildRequires:  asciidoc
 Requires:       bash >= 4
-Requires:       (coreutils or toybox)
+Requires:       coreutils
 Requires:       kmod
-Requires:       (util-linux or toybox)
+Requires:       util-linux
 Requires:       systemd
 Requires:       /bin/sed
 Requires:       /bin/grep
-Requires:       (findutils or toybox)
-Requires:       (cpio or toybox)
+Requires:       findutils
+Requires:       cpio
 
 %description
 dracut contains tools to create a bootable initramfs for 2.6 Linux kernels.
@@ -158,6 +158,8 @@ rm -rf -- $RPM_BUILD_ROOT
 %dir /var/lib/dracut/overlay
 
 %changelog
+*   Fri Jul 12 2019 Ankit Jain <ankitja@vmware.com> 048-2
+-   Removed toybox from Requires which was optional.
 *   Mon Oct 01 2018 Alexey Makhalov <amakhalov@vmware.com> 048-1
 -   Version update
 *   Thu Dec 28 2017 Divya Thaluru <dthaluru@vmware.com>  045-6

@@ -2,7 +2,7 @@
 
 Name:           cloud-init
 Version:        19.1
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Cloud instance init scripts
 Group:          System Environment/Base
 License:        GPLv3
@@ -45,7 +45,7 @@ BuildRequires:  python3-idna
 BuildRequires:  python3-jinja2
 
 Requires:       systemd
-Requires:       (net-tools or toybox)
+Requires:       net-tools
 Requires:       python3
 Requires:       python3-libs
 Requires:       python3-configobj
@@ -147,6 +147,8 @@ rm -rf $RPM_BUILD_ROOT
 %dir /var/lib/cloud
 
 %changelog
+*   Fri Aug 02 2019 Ankit Jain <ankitja@vmware.com> 19.1-2
+-   Replaced (net-tools or toybox) with net-tools.
 *   Tue Jun 25 2019 Keerthana K <keerthanak@vmware.com> 19.1-1
 -   Upgrade to version 19.1 and fix cloud-init GOS logic.
 *   Thu Jun 13 2019 Keerthana K <keerthanak@vmware.com> 18.3-4

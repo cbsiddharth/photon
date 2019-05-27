@@ -58,7 +58,7 @@ class Menu(Action):
         self.window.keypad(1)
         self.panel = curses.panel.new_panel(self.window)
 
-        self.panel.move(starty, (maxx - menu_win_width) // 2)
+        self.panel.move(int(starty), (int ((int(maxx) - int(menu_win_width)) // 2)))
         self.panel.hide()
         curses.panel.update_panels()
 

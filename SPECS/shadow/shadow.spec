@@ -1,7 +1,7 @@
 Summary:        Programs for handling passwords in a secure way
 Name:           shadow
 Version:        4.6
-Release:        3%{?dist}
+Release:        4%{?dist}
 URL:            https://github.com/shadow-maint/
 License:        BSD
 Group:          Applications/System
@@ -26,7 +26,7 @@ BuildRequires:  cracklib-devel
 Requires:       cracklib
 BuildRequires:  Linux-PAM-devel
 Requires:       Linux-PAM
-Requires:       (%{name}-tools = %{version}-%{release} or toybox)
+Requires:       %{name}-tools = %{version}-%{release}
 
 %description
 The Shadow package contains programs for handling passwords
@@ -167,6 +167,8 @@ make %{?_smp_mflags} check
 %defattr(-,root,root)
 
 %changelog
+*   Fri Jul 12 2019 Ankit Jain <ankitja@vmware.com> 4.6-4
+-   Removed toybox from Requires which was optional.
 *   Wed Oct 24 2018 Michelle Wang <michellew@vmware.com> 4.6-3
 -   Add su and login into shadow-tool.
 *   Tue Oct 2 2018 Michelle Wang <michellew@vmware.com> 4.6-2
