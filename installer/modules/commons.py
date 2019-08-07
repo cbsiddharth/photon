@@ -3,6 +3,10 @@ import subprocess
 import re
 
 PRE_INSTALL = "pre-install"
+PRE_INSTALL_CONFIG = "pre-install-config"
+PRE_INSTALL_CONFIG_BACKUP = "pre-install-config-backup"
+PRE_INSTALL_CONFIG_AUTO = "pre-install-config-auto"
+PRE_INSTALL_CONFIG_VLAN = "pre-install-config-vlan"
 POST_INSTALL = "post-install"
 
 LOG_LEVEL_DESC = ["emerg", "alert", "crit", "err", "warning", "notice", "info", "debug"]

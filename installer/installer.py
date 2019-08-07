@@ -50,7 +50,7 @@ class Installer(object):
             self.setup_grub_command = os.path.dirname(__file__)+"/mk-setup-grub.sh"
         self.rpms_tobeinstalled = None
 
-        if self.install_config['iso_installer']:
+        if self.install_config['iso_installer'] and 'ui_install' in self.install_config:
             self.output = open(os.devnull, 'w')
             #initializing windows
             height = 10
@@ -107,7 +107,7 @@ class Installer(object):
         """
         del signal1
         del frame1
-        if self.install_config['iso_installer']:
+        if self.install_config['iso_installer'] and 'ui_install' in self.install_config:
             self.progress_bar.hide()
             self.window.addstr(0, 0, 'Oops, Installer got interrupted.\n\n' +
                                'Press any key to get to the bash...')
@@ -127,7 +127,7 @@ class Installer(object):
         retval = process.wait()
         if retval != 0:
             modules.commons.log(modules.commons.LOG_ERROR, "Failed to unmount disks")
-        if self.install_config['iso_installer']:
+        if self.install_config['iso_installer'] and 'ui_install' in self.install_config:
             self.progress_bar.hide()
             self.window.addstr(0, 0, 'Congratulations, Photon has been installed in {0} secs.\n\n'
                                'Press any key to continue to boot...'
@@ -465,9 +465,11 @@ class Installer(object):
         Setup the tdnf repo for installation
         """
         if self.install_config['iso_installer']:
-            self.window.show_window()
-            self.progress_bar.initialize('Initializing installation...')
-            self.progress_bar.show()
+            if 'ui_install' in self.install_config:
+                self.window.show_window()
+                self.progress_bar.initialize('Initializing installation...')
+                self.progress_bar.show()
+
             #self.rpm_path = "https://dl.bintray.com/vmware/photon_release_1.0_TP2_x86_64"
             if self.rpm_path.startswith("https://") or self.rpm_path.startswith("http://"):
                 cmdoption = 's/baseurl.*/baseurl={}/g'.format(self.rpm_path.replace('/', r'\/'))
@@ -494,6 +496,28 @@ class Installer(object):
             self._tdnf_install_packages()
         else:
             self._rpm_install_packages()
+
+    def progress_bar_update_num_items(self, total_size):
+        if 'ui_install' in self.install_config:
+            self.progress_bar.update_num_items(total_size)
+            return
+
+    def progress_bar_update_message(self, msg):
+        if 'ui_install' in self.install_config:
+            self.progress_bar.update_message(msg)
+            return
+        print(msg)
+
+    def progress_bar_increment(self, package):
+        if 'ui_install' in self.install_config:
+            self.progress_bar.increment(package)
+            return
+
+    def progress_bar_show_loading(self, msg):
+        if 'ui_install' in self.install_config:
+            self.progress_bar.show_loading(msg)
+            return
+        print(msg)
 
     def _tdnf_install_packages(self):
         """
@@ -524,7 +548,7 @@ class Installer(object):
                 elif state == 1: #N A EVR Size(readable) Size(in bytes)
                     if output == '\n':
                         state = 2
-                        self.progress_bar.update_num_items(total_size)
+                        self.progress_bar_update_num_items(total_size)
                     else:
                         info = output.split()
                         package = '{0}-{1}.{2}'.format(info[0], info[2], info[1])
@@ -532,10 +556,10 @@ class Installer(object):
                         total_size += int(info[5])
                 elif state == 2:
                     if output == 'Downloading:\n':
-                        self.progress_bar.update_message('Preparing ...')
+                        self.progress_bar_update_message('Preparing ...')
                         state = 3
                 elif state == 3:
-                    self.progress_bar.update_message(output)
+                    self.progress_bar_update_message(output)
                     if output == 'Running transaction\n':
                         state = 4
                 else:
@@ -543,16 +567,16 @@ class Installer(object):
                     prefix = 'Installing/Updating: '
                     if output.startswith(prefix):
                         package = output[len(prefix):].rstrip('\n')
-                        self.progress_bar.increment(packages_to_install[package])
+                        self.progress_bar_increment(packages_to_install[package])
 
-                    self.progress_bar.update_message(output)
+                    self.progress_bar_update_message(output)
             # 0 : succeed; 137 : package already installed; 65 : package not found in repo.
             if retval != 0 and retval != 137:
                 modules.commons.log(modules.commons.LOG_ERROR,
                                     "Failed to install some packages, refer to {0}"
                                     .format(modules.commons.TDNF_LOG_FILE_NAME))
                 self.exit_gracefully(None, None)
-        self.progress_bar.show_loading('Finalizing installation')
+        self.progress_bar_show_loading('Finalizing installation')
 
     def _rpm_install_packages(self):
         """

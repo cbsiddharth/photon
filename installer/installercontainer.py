@@ -21,7 +21,7 @@ class InstallerContainer(object):
     def install(self, params):
         installer = None
 
-        if self.install_config['type'] == "ostree_host":
+        if self.install_config.get('type', '') == "ostree_host":
             installer = OstreeInstaller(self.install_config, self.maxy, self.maxx,
                               self.iso_installer, self.rpm_path, self.log_path, self.log_level)
         else:
